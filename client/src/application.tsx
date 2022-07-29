@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { Route, RouteChildrenProps, Switch } from "react-router";
 import LoadingComponent from "./components/LoadingComponent";
+import logging from "./config/logging";
 
 import routes from "./config/routes";
 import {
@@ -8,6 +9,7 @@ import {
   initialUserState,
   UserContextProvider,
 } from "./contexts/user";
+import { Validate } from "./modules/auth";
 
 export interface IApplicationProps {}
 
@@ -36,10 +38,18 @@ const Application: React.FC<IApplicationProps> = (props) => {
         setLoading(false);
       }, 1000);
     } else {
-      setAuthStage("Credentials found. Validating...");
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      return Validate(fire_token, (error, user) => {
+        if (error) {
+          logging.error(error);
+          setAuthStage("User not valid, logging out...");
+          userDispatch({ type: "logout", payload: initialUserState });
+          setLoading(false);
+        } else if (user) {
+          setAuthStage("User authenticated");
+          userDispatch({ type: "login", payload: { user, fire_token } });
+          setLoading(false);
+        }
+      });
     }
   };
 

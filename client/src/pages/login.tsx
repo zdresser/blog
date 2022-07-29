@@ -9,7 +9,10 @@ import { Providers } from "../config/firebase";
 import logging from "../config/logging";
 import UserContext from "../contexts/user";
 import IPageProps from "../interfaces/page";
-import { signInWithSocialMedia as SocialMediaPopup } from "../modules/auth";
+import {
+  Authenticate,
+  signInWithSocialMedia as SocialMediaPopup,
+} from "../modules/auth";
 
 const Login: React.FC<IPageProps> = (props) => {
   const [authenticating, setAuthenticating] = useState<boolean>(false);
@@ -31,7 +34,18 @@ const Login: React.FC<IPageProps> = (props) => {
         if (name) {
           try {
             let fire_token = await user.getIdToken();
-            /**if we get a token, auth with backend */
+            Authenticate(uid, name, fire_token, (error, _user) => {
+              if (error) {
+                setError(error);
+                setAuthenticating(false);
+              } else if (user) {
+                userContext.userDispatch({
+                  type: "login",
+                  payload: { user: _user, fire_token },
+                });
+                history.push("/");
+              }
+            });
           } catch (error) {
             setError("Invalid token");
             logging.error(error);

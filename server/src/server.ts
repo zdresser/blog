@@ -4,7 +4,7 @@ import logging from "./config/logging";
 import config from "./config/config";
 import mongoose from "mongoose";
 import firebaseAdmin from "firebase-admin";
-
+import userRoutes from "./routes/user";
 const router = express();
 /**Server Handling */
 const httpServer = http.createServer(router);
@@ -59,7 +59,7 @@ router.use((req, res, next) => {
 });
 
 /**Routes */
-
+router.use("/users", userRoutes);
 /**Error Handling */
 
 router.use((req, res, next) => {
