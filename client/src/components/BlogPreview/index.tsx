@@ -12,7 +12,7 @@ export interface IBlogPreviewProps {
   children?: React.ReactNode;
 }
 
-const BlogPreview: React.FunctionComponent<IBlogPreviewProps> = (props) => {
+const BlogPreview: React.FC<IBlogPreviewProps> = (props) => {
   const { _id, author, children, createdAt, updatedAt, headline, title } =
     props;
 

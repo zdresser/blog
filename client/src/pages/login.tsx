@@ -33,7 +33,7 @@ const Login: React.FC<IPageProps> = (props) => {
         let name = user.displayName;
         if (name) {
           try {
-            let fire_token = await user.getIdToken();
+            let fire_token = await user.getIdToken(true);
             Authenticate(uid, name, fire_token, (error, _user) => {
               if (error) {
                 setError(error);
