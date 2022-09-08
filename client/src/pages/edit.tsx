@@ -78,7 +78,9 @@ const EditPage: React.FC<IPageProps & RouteComponentProps<any>> = (props) => {
         setId("");
       }
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -113,7 +115,9 @@ const EditPage: React.FC<IPageProps & RouteComponentProps<any>> = (props) => {
         setError("Unable to save blog");
       }
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setSaving(false);
     }
@@ -148,7 +152,9 @@ const EditPage: React.FC<IPageProps & RouteComponentProps<any>> = (props) => {
         setError("Unable to save blog");
       }
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setSaving(false);
     }
